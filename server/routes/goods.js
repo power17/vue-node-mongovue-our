@@ -77,6 +77,7 @@ router.get('/',function (req,res,next) {
 });
 
 //购物车功能(先找到用户，在找到商品列表，把商品列表放在对应的用户上面)12121221223111
+
 router.post("/addCart",function (req,res,next) {
     var userId = '100000077',productId = req.body.productId;
     var User = require('../models/user');
