@@ -95,6 +95,7 @@
         </div>
       </div>
     </div>
+
     <!-- 模态框 -->
     <Modal :mdShow="modalConfirm" @close="closeModal">
       <p slot="message">你确认要删除此条数据吗？</p>
@@ -149,32 +150,158 @@
 <script>
   import './../assets/css/checkout.css'
   import './../assets/css/base.css'
+  import './../assets/css/product.css'
   import NavHeader from  '@/components/NavHeader'
   import NavFooter from  '@/components/NavFooter'
   import NavBread from  '@/components/NavBread'
+  import Modal from  '@/components/Modal'
   import axios from  'axios'
+  import {currency} from '@/util/currency.js'
     export default {
         data(){
           return {
-            cartList:[]
+            cartList:[],
+            productId:'',
+            modalConfirm:false,
+            delItem:{}
+
+            // checkAllFlag: false
           }
         },
+      filters:{
+        currency:currency
+      },
       mounted(){
+
           this.init();
+      },
+      //刷新后全选
+      computed:{
+          checkAllFlag(){
+
+            return this.checkedCount == this.cartList.length;
+          },
+        checkedCount(){
+            var i = 0;
+            console.log(this.cartList)
+            this.cartList.forEach((item)=>{
+              if(item.checked == '1') {
+                i++;
+              }
+            });
+
+          return i;
+        },
+        totalPrice() {
+            var money = 0;
+
+            this.cartList.forEach((item)=>{
+          if(item.checked == '1'){
+            money +=parseFloat(item.salePrice)*parseInt(item.productNum)
+          }
+          return money;
+        })
+        }
       },
       components:{
         NavHeader,
         NavFooter,
-        NavBread
+        NavBread,
+        Modal
       },
       methods:{
-          init(){
+        init(){
             axios.get('/users/cartList').then((response)=>{
-              let res = response.data;
-              this.cartList = res.result;
 
+              let res = response.data;
+              if(res.status == '0'){
+                this.cartList = res.result;
+
+              }
             });
+          },
+        delCartConfirm(item){
+            this.delItem = item;
+            this.modalConfirm = true;
+
+        },
+        closeModal(){
+          this.modalConfirm = false;
+        },
+        delCart(){
+          axios.post('/users/cartDel',{
+            productId:this.delItem.productId
+          }).then((response)=>{
+            let res = response.data;
+            if(res.status =='0'){
+              this.modalConfirm = false;
+              this.init();
+            }
+          })
+
+        },
+        editCart(flat,item){
+          if(flat == 'add'){
+            item.productNum++;
+          }else if(flat =='minu') {
+            if(item.productNum<=1){
+              return;
+            }
+            item.productNum--;
+          }else {
+            item.checked =item.checked== '1'?'0':'1'
           }
+          axios.post('/users/cartEdit',{
+            productId:item.productId,
+            productNum: item.productNum,
+            checked:item.checked
+          }).then((response)=>{
+            let res = response.data;
+
+          })
+
+
+        },
+        // toggleCheckAll(){    // 全选和取消全选
+        //   // this.checkAllFlag = !this.checkAllFlag;  // 不能使用这种写法了，checkAllFlag是实时计算的属性，如果true取反变成false之后，还没来得及执行下面的所有商品取消勾选，就实时计算了检测到勾选的商品种数=购物车商品列表的商品种数,就又变成全选了。
+        //   var flag = !this.checkAllFlag; // 声明变量取代
+        //   this.cartList.forEach((item)=>{
+        //     item.checked = flag ?'1':'0';
+        //   })
+        //   axios.post('/users/editCheckAll',{
+        //     checkAll:flag
+        //   }).then((response)=>{
+        //     let res = response.data;
+        //     if(res.status=='0'){
+        //       console.log("update suc");
+        //     }
+        //   })
+        // },
+        toggleCheckAll(){
+
+
+          var flag = !this.checkAllFlag;
+
+          this.cartList.forEach((item)=>{
+            item.checked = flag ?'1':'0';
+          });
+
+          axios.post('/users/editCheckAll',{
+            checkAll: flag
+          }).then((response)=>{
+            let res = response.data;
+            if(res.status =='0'){
+              console.log('update suc');
+            }
+          })
+        },
+        checkOut(){    // 结账
+          if(this.checkedCount>0){   // 已勾选的商品种数>0时才可以跳转到地址列表页
+            this.$router.push(
+              {path:"/address"}
+            );
+          }
+        }
       }
     }
 </script>
