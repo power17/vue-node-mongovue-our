@@ -21,7 +21,7 @@ mongoose.connection.on('disconnected',function () {
 });
 
  //查询商品
-router.get('/',function (req,res,next) {
+router.get('/list',function (req,res,next) {
   let page = parseInt(req.query.page);//第几页
   let pageSize = parseInt(req.query.pageSize);//一页多少条
   let priceLevel = req.query.priceLevel || 'all';//价格范围
