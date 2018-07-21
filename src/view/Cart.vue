@@ -148,6 +148,7 @@
 
 <script>
   import './../assets/css/checkout.css'
+  import './../assets/css/base.css'
   import NavHeader from  '@/components/NavHeader'
   import NavFooter from  '@/components/NavFooter'
   import NavBread from  '@/components/NavBread'
@@ -155,13 +156,25 @@
     export default {
         data(){
           return {
-            msg: 'hello Vue'
+            cartList:[]
           }
         },
+      mounted(){
+          this.init();
+      },
       components:{
         NavHeader,
         NavFooter,
         NavBread
+      },
+      methods:{
+          init(){
+            axios.get('/users/cartList').then((response)=>{
+              let res = response.data;
+              this.cartList = res.result;
+
+            });
+          }
       }
     }
 </script>
