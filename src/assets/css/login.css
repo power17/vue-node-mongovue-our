@@ -149,3 +149,21 @@ a {
   visibility: visible;
   height: auto;
 }
+
+@media only screen and (max-width: 991px) {
+  .md-title{
+    text-align: center;
+    top: -5px;
+    left: 10px;
+  }
+  .login-wrap{
+    margin-top: 0;
+  }
+  .confirm-tips{
+    padding: 35px 10px 10px!important;
+  }
+  .confirm-tips ul{
+    width: 100%;
+  }
+
+}
