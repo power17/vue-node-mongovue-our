@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav-header></nav-header>
+    <nav-header :loginModalFlagP="goL"></nav-header>
     <nav-bread>
       <span>good</span>
     </nav-bread>
@@ -66,8 +66,9 @@
       <p slot="message">
         请先登录,否则无法加入到购物车中!
       </p>
-      <div slot="btnGroup">
+      <div slot="btnGroup" class="btn-fa">
         <a href="javascript:;" class="btn btn--m" @click="mdShow=false">关闭</a>
+        <a href="javascript:;" class="btn btn--m"  @click="mdShow=false;goL=true">去登录</a>
       </div>
     </Modal>
     <!-- 登陆了 -->
@@ -115,6 +116,7 @@
     export default {
      data(){
        return{
+         goL:false,
          goodsList: [],//商品列表
          priceFilter: [
            {

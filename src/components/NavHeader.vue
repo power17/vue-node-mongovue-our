@@ -66,17 +66,26 @@
   import axios from 'axios'
     export default {
         data() {
-          return{
-            userName:'',
-            userPwd:'',
-            errorTip:false,
-            loginModalFlag : false,
-            nickName: ''
-          }
-        },
-      mounted () {
-          this.checkLogin()
+        return{
+          userName:'',
+          userPwd:'',
+          errorTip:false,
+          loginModalFlag : this.loginModalFlagP,
+          nickName: ''
+        }
       },
+        props:["loginModalFlagP"],
+
+      mounted () {
+
+          this.checkLogin();
+      },
+      computed:{
+        // loginModalFlag:function () {
+        //   return loginModalFlag1;
+        // }
+      },
+
       methods:{
           //登陆
           login() {
