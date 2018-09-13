@@ -1146,6 +1146,14 @@ html {
   text-align: center;
   font-size: 0;
 }
+@media screen and (max-width: 901px) {
+  .md-modal .btn-wrap .btn--m{
+    width: 50%!important;
+  }
+  .btn-wrap .btn-fa{
+    width: 100%;
+  }
+}
 
 .md-modal .btn-wrap .btn {
   width: 45%;
