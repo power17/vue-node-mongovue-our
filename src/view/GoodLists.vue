@@ -116,7 +116,7 @@
     export default {
      data(){
        return{
-         goL:false,
+         // goL:false,
          goodsList: [],//商品列表
          priceFilter: [
            {

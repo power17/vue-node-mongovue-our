@@ -61,6 +61,8 @@ router.get('/list',function (req,res,next) {
         msg: err
       })
     }else{
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Credentials', 'true');
       res.json({
         status:'0',
         msg:'',

@@ -77,13 +77,15 @@
         props:["loginModalFlagP"],
 
       mounted () {
+          // console.log(this.loginModalFlagP);
 
           this.checkLogin();
       },
       computed:{
-        // loginModalFlag:function () {
-        //   return loginModalFlag1;
-        // }
+          // loginModalFlagP:function () {
+          //
+          // }
+
       },
 
       methods:{
