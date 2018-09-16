@@ -26,6 +26,11 @@
         </div>
       </div>
     </div>
+    <form action="/file/uploading" enctype="multipart/form-data" method="post">
+    <input type="text" name="title">
+    <input type="file" name="fileDetail" multiple="multiple">
+    <input type="submit" value="Upload">
+    </form>'
   </footer>
 </template>
 

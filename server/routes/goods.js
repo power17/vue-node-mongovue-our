@@ -20,6 +20,7 @@ mongoose.connection.on('disconnected',function () {
   console.log('MongoDb connected disconnected');
 });
 
+
  //查询商品
 router.get('/list',function (req,res,next) {
   let page = parseInt(req.query.page);//第几页

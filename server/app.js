@@ -7,7 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var goods = require('./routes/goods');
-// var uploading = require('./routes/uploading');
+var uploading = require('./routes/uploading');
 
 var app = express();
 
@@ -21,17 +21,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//上传接口
-// app.use('/file', uploading);
+
+
+
+
 //检查登陆状态
 app.use(function (req,res,next) {
   if(req.cookies.userId){
     next();
   }else {
     console.log("url" + req.originalUrl);
-    if(req.originalUrl =='/users/login' || req.originalUrl == '/users/logout' || req.originalUrl.indexOf('/goods/list')>-1) {
+    if(req.originalUrl =='/users/login' || req.originalUrl == '/users/logout' || req.originalUrl.indexOf('/goods/list')>-1 || req.originalUrl.indexOf('/file') > -1) {
       next()
     }else{
+      next();
       res.json({
         status: '1001',
         msg:'当前未登录',
@@ -44,6 +47,12 @@ app.use(function (req,res,next) {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/goods', goods);
+
+
+//上传接口
+app.use('/file',uploading);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

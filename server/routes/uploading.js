@@ -1,31 +1,50 @@
 var express = require('express');
 var router = express.Router();
-var multiparty = require('multiparty');
+var formidable = require('formidable');
+var util = require('util');
+var fs = require("fs");
+var sd = require("silly-datetime");
+var path = require("path");
 
 
-/* 上传*/ router.post('/uploading', function(req, res, next){
-  //生成multiparty对象，并配置上传目标路径
-  var form = new multiparty.Form({uploadDir: './public/files/'});
-    //上传完成后处理
+
+/* 上传*/
+router.post('/uploading', function(req, res, next){
+  var form = new formidable.IncomingForm();
+  //设置文件上传存放地址
+  form.uploadDir = "./uploads";
+
+  //执行里面的回调函数的时候，表单已经全部接收完毕了。
   form.parse(req, function(err, fields, files) {
-       var filesTmp = JSON.stringify(files,null,2);
+    //改名字
+    //使用第三方模块silly-datetime
+    var t = sd.format(new Date(),'YYYYMMDDHHmmss');
+
+    //生成随机数
+    var ran = parseInt(Math.random() * 8999 +10000);
+    var extname = path.extname(files.fileDetail.name);
+    var oldpath = path.resolve(__dirname, '../../') +'/' + files.fileDetail.path;
+    var newpath = path.resolve(__dirname, '../../')+ '/uploads/'+t+ran+extname;
+    // var newpath = path.resolve(__dirname, '../../')+ '/uploads/'+'1'+extname;
+    console.log(oldpath);
+    console.log(newpath);
+
+    //改名
+    fs.rename(oldpath,newpath,function (err) {
       if(err){
-      console.log('parse error: ' + err);
-          } else {
-            console.log('parse files: ' + filesTmp);
-            var inputFile = files.inputFile[0];
-            var uploadedPath = inputFile.path;
-            var dstPath = './public/files/' + inputFile.originalFilename;
-            //重命名为真实文件名
-        fs.rename(uploadedPath, dstPath, function(err) {
-                if(err){
-                    console.log('rename error: ' + err);
-                  } else {
-                    console.log('rename ok');}
-              });
-          }
-       res.writeHead(200, {'content-type': 'text/plain;charset=utf-8'});
-        res.write('received upload:\n\n');
-        res.end(util.inspect({fields: fields, files: filesTmp}));
-     });
+        throw  Error("改名失败");
+      }
+      res.writeHead(200, {'content-type': 'text/plain'});
+      res.end("成功");
+    });
+    // res.writeHead(200, {'content-type': 'text/plain'});
+    //
+    // res.end("success");
+
   });
+
+
+  });
+
+
+module.exports = router;

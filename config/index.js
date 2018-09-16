@@ -19,6 +19,9 @@ module.exports = {
       },
       '/users/*':{   // users/路由的下一级路由
         target:'http://localhost:3000'
+      },
+      '/file/*':{   // users/路由的下一级路由
+        target:'http://localhost:3000'
       }
     },
     // Various Dev Server settings

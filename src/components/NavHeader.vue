@@ -59,6 +59,7 @@
     </div>
     <div class="md-overlay" v-if="loginModalFlag" @click="loginModalFlag=false"></div>
   </header>
+
 </template>
 
 <script>
