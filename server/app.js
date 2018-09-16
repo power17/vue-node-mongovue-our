@@ -3,10 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+//接口地址
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var goods = require('./routes/goods');
+// var uploading = require('./routes/uploading');
 
 var app = express();
 
@@ -20,6 +21,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//上传接口
+// app.use('/file', uploading);
 //检查登陆状态
 app.use(function (req,res,next) {
   if(req.cookies.userId){
