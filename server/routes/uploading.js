@@ -5,6 +5,7 @@ var util = require('util');
 var fs = require("fs");
 var sd = require("silly-datetime");
 var path = require("path");
+var unzip = require('unzip');
 
 
 
@@ -34,8 +35,19 @@ router.post('/uploading', function(req, res, next){
       if(err){
         throw  Error("改名失败");
       }
-      res.writeHead(200, {'content-type': 'text/plain'});
-      res.end("成功");
+      //解压缩
+      fs.createReadStream(newpath).pipe(unzip.Extract({ path: path.resolve(__dirname, '../../')+ '/uploads/' }));
+      //删除文件
+      fs.unlink(newpath,function () {
+
+      });
+      //回应
+      res.json({
+        status:'0',
+        files:files
+      });
+
+
     });
     // res.writeHead(200, {'content-type': 'text/plain'});
     //

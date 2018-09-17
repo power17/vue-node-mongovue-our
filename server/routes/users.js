@@ -63,6 +63,7 @@ router.post("/logout", function (req,res,next) {
 //检验是否登录
 router.get('/checkLogin',function (req,res,next) {
   if(req.cookies.userId) {
+
     res.json({
       status:'0',
       msg: '',

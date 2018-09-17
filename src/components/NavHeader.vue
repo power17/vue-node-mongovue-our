@@ -10,7 +10,7 @@
     <div class="navbar">
       <div class="navbar-left-container">
         <a href="/">
-          <img class="navbar-brand-logo" src="static/logo.png"></a>
+          <img class="navbar-brand-logo" src="../../static/logo.png"></a>
       </div>
       <div class="navbar-right-container" style="display: flex;">
         <div class="navbar-menu-container">
@@ -71,21 +71,20 @@
           userName:'',
           userPwd:'',
           errorTip:false,
-          loginModalFlag : this.loginModalFlagP,
+          loginModalFlag : false,
           nickName: ''
         }
       },
-        props:["loginModalFlagP"],
+
+        // props:["loginModalFlagP"],
 
       mounted () {
-          // console.log(this.loginModalFlagP);
+
 
           this.checkLogin();
       },
       computed:{
-          // loginModalFlagP:function () {
-          //
-          // }
+
 
       },
 
